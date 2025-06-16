@@ -8,6 +8,8 @@ __pycache__/
 
 # Virtual environment
 venv/
+venv/*
+
 .env/
 ENV/
 env.bak/
@@ -91,3 +93,4 @@ Desktop.ini
 #scripts
 
 scripts/
+scripts/*
