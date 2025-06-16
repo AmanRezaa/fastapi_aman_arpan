@@ -87,3 +87,7 @@ Desktop.ini
 *.tmp
 *~
 *.Identifier
+
+#scripts
+
+scripts/
