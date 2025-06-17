@@ -1,55 +1,91 @@
-# FastAPI CRUD Application
-
-A basic CRUD API built using FastAPI, demonstrating modular route handling, validation, and clean branching workflow.
-
-# Team Members
-- Aman Reza
-- Arpan Koley
 
 
-# Features
+# 🚀 FastAPI CRUD Blog Application
 
-- **Create User (POST)** → id, Name and Address
-- **Get Users (GET)** → List all users
-- **Update User (PATCH)** → Update name for an existing id
-- **Delete User (DELETE)** → Remove user by id
+A modular and scalable FastAPI CRUD application for blogs, using asynchronous PostgreSQL integration and clean project structure.
 
-# Project Structure
+---
+
+## 🧱 Project Structure
+
 ```
-fastapi_aman_arpan/
-├── main.py
-├── models.py
-├── routes/
-│       ├── create_user.py   # POST endpoint
-│       ├── get_user.py     # GET endpoint
-│       ├── update_user.py   # PATCH endpoint
-│       ├── delete_user.py   # DELETE endpoint
-├── requirements.txt
-├── README.md
+backend/
+├── app/
+│   ├── controllers/       # Business logic layer (e.g., blog logic)
+│   ├── models/            # Pydantic models and database schemas
+│   ├── routes/            # API route definitions (e.g., /blogs)
+│   └── utils/             # Utility scripts and DB setup
+│       ├── db.py          # Database session & connection
+│       ├── main.py        # FastAPI app initialization
+│       └── temp.py        # Temporary/testing script
+├── venv/                  # Python virtual environment
+├── .env                   # Environment variables (e.g., DB credentials)
+├── .gitignore             # Git ignored files
+├── requirements.txt       # Python dependencies
+└── README.md              # Project documentation
 ```
 
-# Setup Instructions
+---
 
-# 1.Clone the Repository
-git clone <repository-url>
-cd fastapi_aman_arpan
-# 2.Create Virtual Environment
+## ⚙️ Features
+
+* 🧩 Modular design for clear code separation
+* ⚡ Async PostgreSQL with SQLAlchemy + `asyncpg`
+* 🔁 Full CRUD operations on `/blogs` route
+* 🛠️ Environment-based configuration with `.env`
+* 🧪 Easy to test, extend, and deploy
+
+---
+
+## 📦 Installation
+
+```bash
+# Clone the project
+git clone <your-repo-url>
+cd backend
+
+# Create and activate virtual environment
 python3 -m venv venv
-source venv/bin/activate   
-# 3.Install Dependencies
+source venv/bin/activate
+
+# Install dependencies
 pip install -r requirements.txt
+```
+
+---
+
+## 🛠️ Environment Setup
+
+Create a `.env` file in the root directory with:
+
+```env
+DATABASE_URL=postgresql+asyncpg://user:password@localhost:5432/blogdb
+```
+
+---
+
+## 🏃 Run the Application
+
+```bash
+uvicorn app.utils.main:app --reload
+```
+
+---
+
+## 📌 API Endpoints
+
+| Method | Endpoint      | Description             |
+| ------ | ------------- | ----------------------- |
+| GET    | `/blogs/`     | List all blogs          |
+| POST   | `/blogs/`     | Create a new blog       |
+| GET    | `/blogs/{id}` | Get blog by ID          |
+| PUT    | `/blogs/{id}` | Update an existing blog |
+| DELETE | `/blogs/{id}` | Delete a blog by ID     |
 
 
-# Running the App
-uvicorn main:app --reload
+---
 
 
-# API Endpoints
-| Method | Endpoint         | Description          |
-| ------ | ---------------- | -------------------- |
-| POST   | `/users`         | Create a new user    |
-| GET    | `/users`         | List all users       |
-| PATCH  | `/users/{phone}` | Update user name     |
-| DELETE | `/users/{phone}` | Delete user by phone |
+## 👤 Author
 
-#
+Developed by Arpan Koley and Aman Reza.
