@@ -18,7 +18,7 @@ from collections.abc import AsyncGenerator
 # ------------------- Load Environment -------------------
 load_dotenv()  # loads variables from .env into environment
 
-DATABASE_URL_CLOUD = os.getenv("DATABASE_URL")
+DATABASE_URL_CLOUD = os.getenv("DATABASE_URL_CLOUD")
 if not DATABASE_URL_CLOUD:
     raise RuntimeError("DATABASE_URL is not set in the .env file")
 
