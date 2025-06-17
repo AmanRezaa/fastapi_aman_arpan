@@ -36,3 +36,5 @@ async def delete_blog(id: int, db: AsyncSession = Depends(get_db)):
     if not deleted:
         raise HTTPException(status_code=404, detail="Blog not found or delete failed")
     return {"message": "Blog deleted successfully"}
+
+
