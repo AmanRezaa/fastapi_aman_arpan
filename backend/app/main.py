@@ -19,7 +19,7 @@ async def lifespan(app: FastAPI):
     yield
     await engine.dispose()
 
-app = FastAPI(lifespan=lifespan)
+app  = FastAPI(lifespan=lifespan)
 
 # Include your routers
 app.include_router(blog_routes.router)
