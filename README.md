@@ -1,5 +1,13 @@
 
 
+
+## 👤 Author
+
+Developed by Arpan Koley and Aman Reza.
+
+
+---
+
 # 🚀 FastAPI CRUD Blog Application
 
 A modular and scalable FastAPI CRUD application for blogs, using asynchronous PostgreSQL integration and clean project structure.
@@ -21,6 +29,8 @@ backend/
 ├── venv/                  # Python virtual environment
 ├── .env                   # Environment variables (e.g., DB credentials)
 ├── .gitignore             # Git ignored files
+├── .dockerignore          # Docker ignored files
+├── .Dockerfile            # Docker commands
 ├── requirements.txt       # Python dependencies
 └── README.md              # Project documentation
 ```
@@ -83,14 +93,6 @@ uvicorn app.utils.main:app --reload
 | DELETE | `/blogs/{id}` | Delete a blog by ID     |
 
 
----
-
-
-## 👤 Author
-
-Developed by Arpan Koley and Aman Reza.
-
-Here’s the **updated `README.md` attachment content** with the new Docker-related section:
 
 ---
 
