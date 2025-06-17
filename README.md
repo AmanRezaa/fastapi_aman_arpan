@@ -89,3 +89,42 @@ uvicorn app.utils.main:app --reload
 ## 👤 Author
 
 Developed by Arpan Koley and Aman Reza.
+
+Here’s the **updated `README.md` attachment content** with the new Docker-related section:
+
+---
+
+### 📦 Docker Support
+
+#### 🐳 Dockerfile
+
+Created a file named `Dockerfile` in project root.
+
+---
+
+#### 📂 .dockerignore
+
+Created a `.dockerignore` file in `backend/` directory to avoid copying unnecessary files:
+
+#### ⚙️ Build and Run
+
+1. **Build Docker image**
+   Run this in your terminal:
+
+   ```bash
+   docker build -t fastapi-blog-app .
+   ```
+
+2. **Run Docker container**
+
+   ```bash
+   docker run -p 8000:8000 fastapi-blog-app
+   ```
+
+   > If your app needs environment variables like `DATABASE_URL_CLOUD`, use:
+   >
+   > ```bash
+   > docker run --env-file .env -p 8000:8000 fastapi-blog-app
+   > ```
+
+---
