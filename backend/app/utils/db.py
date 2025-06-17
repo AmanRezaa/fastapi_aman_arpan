@@ -18,11 +18,11 @@ from collections.abc import AsyncGenerator
 # ------------------- Load Environment -------------------
 load_dotenv()  # loads variables from .env into environment
 
-DATABASE_URL = os.getenv("DATABASE_URL")
-if not DATABASE_URL:
+DATABASE_URL_CLOUD = os.getenv("DATABASE_URL")
+if not DATABASE_URL_CLOUD:
     raise RuntimeError("DATABASE_URL is not set in the .env file")
 
-parsed = urlparse(DATABASE_URL)
+parsed = urlparse(DATABASE_URL_CLOUD)
 ASYNC_NEONDB_DATABASE_URL = f"postgresql+asyncpg://{parsed.username}:{parsed.password}@{parsed.hostname}{parsed.path}"
 
 
