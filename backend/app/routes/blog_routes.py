@@ -8,6 +8,7 @@ from typing import List
 
 router = APIRouter(prefix="/blogs", tags=["Blogs"])
 
+
 @router.post("/", response_model=BlogOut)
 async def create_blog(blog: BlogCreate, db: AsyncSession = Depends(get_db)):
     return await blog_controller.create_blog(blog, db)
