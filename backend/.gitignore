@@ -93,5 +93,5 @@ Desktop.ini
 
 #scripts
 
-scripts/
-scripts/*
+# scripts/
+# scripts/*

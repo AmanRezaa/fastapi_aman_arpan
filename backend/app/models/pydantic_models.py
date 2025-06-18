@@ -1,5 +1,5 @@
 # app/models/pydantic_models.py
-from pydantic import BaseModel
+from pydantic import BaseModel,EmailStr
 
 class BlogCreate(BaseModel):
     title: str
@@ -10,3 +10,26 @@ class BlogOut(BlogCreate):
 
     class Config:
         orm_mode = True
+
+
+class UserLogin(BaseModel):
+    email: EmailStr
+    password: str
+    
+class UserSignup(UserLogin):
+    username : str
+
+
+class UserCreate(BaseModel):
+    email: EmailStr
+    password: str
+    
+
+class UserOut(BaseModel):
+    email: EmailStr
+
+    class Config:
+        orm_mode = True
+
+class TokenResponse(BaseModel):
+    message: str
