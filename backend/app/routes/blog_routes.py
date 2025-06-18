@@ -30,6 +30,7 @@ async def update_blog(id: int, blog_update: BlogCreate, db: AsyncSession = Depen
         raise HTTPException(status_code=404, detail="Blog not found or update failed")
     return updated_blog
 
+
 @router.delete("/{id}")
 async def delete_blog(id: int, db: AsyncSession = Depends(get_db)):
     deleted = await blog_controller.delete_blog(id, db)
