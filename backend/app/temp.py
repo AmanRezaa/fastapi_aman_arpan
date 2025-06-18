@@ -1,73 +1,52 @@
-# from fastapi import FastAPI, Depends, HTTPException
-# from sqlalchemy.ext.asyncio import AsyncSession, create_async_engine, async_sessionmaker
-# from sqlalchemy.orm import DeclarativeBase, Mapped, mapped_column
-# from sqlalchemy import Integer, String, select
-# from contextlib import asynccontextmanager
-# from dotenv import load_dotenv
-# from urllib.parse import urlparse
-# import os
-# import ssl
+from fastapi import FastAPI, Request, Depends, HTTPException, status, Response
+from fastapi.responses import JSONResponse
+from app.models.pydantic_models import UserCreate, UserOut, TokenResponse
+from app.auth.utils import hash_password, verify_password, create_access_token, decode_access_token
 
+from typing import Dict
 
-# # ------------------- Load Environment -------------------
-# load_dotenv()  # loads variables from .env into environment
+app = FastAPI()
 
-# DATABASE_URL = os.getenv("DATABASE_URL")
-# if not DATABASE_URL:
-#     raise RuntimeError("DATABASE_URL is not set in the .env file")
+# In-memory fake DB
+fake_db: Dict[str, str] = {}
 
-# parsed = urlparse(DATABASE_URL)
-# ASYNC_NEONDB_DATABASE_URL = f"postgresql+asyncpg://{parsed.username}:{parsed.password}@{parsed.hostname}{parsed.path}"
+@app.post("/signup", response_model=UserOut)
+def signup(user: UserCreate):
+    if user.email in fake_db:
+        raise HTTPException(status_code=400, detail="User already exists")
+    fake_db[user.email] = hash_password(user.password)
+    return {"email": user.email}
 
+@app.post("/login", response_model=TokenResponse)
+def login(user: UserCreate, response: Response):
+    hashed = fake_db.get(user.email)
+    if not hashed or not verify_password(user.password, hashed):
+        raise HTTPException(status_code=401, detail="Invalid credentials")
+    
+    token = create_access_token(data={"sub": user.email})
+    response.set_cookie(
+        key="access_token",
+        value=token,
+        httponly=True,
+        secure=False,  # Set True in production (HTTPS)
+        samesite="lax",
+        path="/"
+    )
+    return {"message": "Login successful"}
 
-# # ------------------- DB Setup -------------------
-# engine = create_async_engine(
-#     ASYNC_NEONDB_DATABASE_URL,
-#     echo=True,
-#     connect_args={"ssl": ssl.create_default_context()} 
-#     )
-# async_session = async_sessionmaker(engine, expire_on_commit=False)
+@app.get("/protected", response_model=UserOut)
+def get_current_user(request: Request):
+    token = request.cookies.get("access_token")
+    if not token:
+        raise HTTPException(status_code=401, detail="Not authenticated")
 
-# # ------------------- ORM Base -------------------
-# class Base(DeclarativeBase):
-#     pass
+    email = decode_access_token(token)
+    if not email or email not in fake_db:
+        raise HTTPException(status_code=401, detail="Invalid token")
 
+    return {"email": email}
 
-# # ------------------- Model -------------------
-# class User(Base):
-#     __tablename__ = "users"
-#     id: Mapped[int] = mapped_column(Integer, primary_key=True)
-#     name: Mapped[str] = mapped_column(String, nullable=False)
-
-# # ------------------- Lifespan -------------------
-# @asynccontextmanager
-# async def lifespan(app: FastAPI):
-#     async with engine.begin() as conn:
-#         await conn.run_sync(Base.metadata.create_all)
-#     yield
-#     await engine.dispose()
-
-# # ------------------- App -------------------
-# app = FastAPI(lifespan=lifespan)
-
-# # ------------------- Dependency -------------------
-# async def get_session() -> AsyncSession:
-#     async with async_session() as session:
-#         yield session
-
-# # ------------------- Routes -------------------
-# @app.post("/users")
-# async def create_user(name: str, session: AsyncSession = Depends(get_session)):
-#     user = User(name=name)
-#     session.add(user)
-#     await session.commit()
-#     await session.refresh(user)
-#     return {"id": user.id, "name": user.name}
-
-# @app.get("/users/{user_id}")
-# async def read_user(user_id: int, session: AsyncSession = Depends(get_session)):
-#     result = await session.execute(select(User).where(User.id == user_id))
-#     user = result.scalar_one_or_none()
-#     if user is None:
-#         raise HTTPException(status_code=404, detail="User not found")
-#     return {"id": user.id, "name": user.name}
+@app.post("/logout")
+def logout(response: Response):
+    response.delete_cookie("access_token", path="/")
+    return {"message": "Logged out successfully"}

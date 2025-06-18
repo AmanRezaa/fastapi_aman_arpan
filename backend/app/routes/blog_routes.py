@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.controllers import blog_controller
 from app.models.pydantic_models import BlogCreate, BlogOut
-from app.utils.db import get_db
+from app.database.utils import get_db
 from typing import List
 
 router = APIRouter(prefix="/blogs", tags=["Blogs"])
