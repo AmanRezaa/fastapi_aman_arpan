@@ -1,16 +1,15 @@
 
 
 
-## 👤 Author
+# 🚀 FastAPI CRUD Blog Application
 
-Developed by Arpan Koley and Aman Reza.
-
+A modular and scalable FastAPI CRUD application for blogs and authentication using asynchronous PostgreSQL integration and clean project structure.
 
 ---
 
-# 🚀 FastAPI CRUD Blog Application
+## 👤 Author
 
-A modular and scalable FastAPI CRUD application for blogs, using asynchronous PostgreSQL integration and clean project structure.
+Developed by Arpan Koley and Aman Reza.
 
 ---
 
@@ -19,30 +18,34 @@ A modular and scalable FastAPI CRUD application for blogs, using asynchronous Po
 ```
 backend/
 ├── app/
-│   ├── controllers/       # Business logic layer (e.g., blog logic)
-│   ├── models/            # Pydantic models and database schemas
-│   ├── routes/            # API route definitions (e.g., /blogs)
-│   └── utils/             # Utility scripts and DB setup
-│       ├── db.py          # Database session & connection
-│       ├── main.py        # FastAPI app initialization
-│       └── temp.py        # Temporary/testing script
-├── venv/                  # Python virtual environment
-├── .env                   # Environment variables (e.g., DB credentials)
-├── .gitignore             # Git ignored files
-├── .dockerignore          # Docker ignored files
-├── .Dockerfile            # Docker commands
-├── requirements.txt       # Python dependencies
-└── README.md              # Project documentation
+│   ├── auth/                    # Auth utilities (e.g., JWT helpers)
+│   ├── controllers/             # Business logic layer
+│   ├── database/                # DB config and helpers
+│   ├── middleware/             # Custom auth middleware
+│   ├── models/                  # Pydantic models & DB schemas
+│   ├── routes/                  # API route definitions
+│   ├── utils/                   # Utility functions
+│   ├── main.py                  # FastAPI app initialization
+│   └── temp.py                  # Temporary/testing script
+├── scripts/
+│   └── dokcer.sh                # Docker helper script
+├── .env                         # Environment variables
+├── .gitignore
+├── .dockerignore
+├── Dockerfile
+├── requirements.txt
+└── README.md
 ```
 
 ---
 
 ## ⚙️ Features
 
-* 🧩 Modular design for clear code separation
+* 🧩 Modular design with clear separation of concerns
+* 🔒 Authentication with JWTs (HTTP-only cookies)
 * ⚡ Async PostgreSQL with SQLAlchemy + `asyncpg`
-* 🔁 Full CRUD operations on `/blogs` route
-* 🛠️ Environment-based configuration with `.env`
+* 🔁 Full CRUD operations for blog resources
+* 🔐 Middleware to protect routes (`/blogs` only)
 * 🧪 Easy to test, extend, and deploy
 
 ---
@@ -50,15 +53,12 @@ backend/
 ## 📦 Installation
 
 ```bash
-# Clone the project
 git clone <your-repo-url>
 cd backend
 
-# Create and activate virtual environment
 python3 -m venv venv
 source venv/bin/activate
 
-# Install dependencies
 pip install -r requirements.txt
 ```
 
@@ -70,6 +70,9 @@ Create a `.env` file in the root directory with:
 
 ```env
 DATABASE_URL=postgresql+asyncpg://user:password@localhost:5432/blogdb
+SECRET_KEY=your_jwt_secret
+ALGORITHM=HS256
+ACCESS_TOKEN_EXPIRE_MINUTES=30
 ```
 
 ---
@@ -82,7 +85,56 @@ uvicorn app.utils.main:app --reload
 
 ---
 
+## 🔐 Authentication Flow
+
+### ✅ Signup
+
+**Endpoint:** `POST /auth/signup`
+**Description:** Create a new user account.
+**Body:**
+
+```json
+{
+  "email": "user@example.com",
+  "password": "securepassword"
+}
+```
+
+---
+
+### 🔓 Login
+
+**Endpoint:** `POST /auth/login`
+**Description:** Authenticate user and return JWT as HTTP-only cookie.
+**Body:**
+
+```json
+{
+  "email": "user@example.com",
+  "password": "securepassword"
+}
+```
+
+**Response:** Sets `access_token` in a secure cookie.
+
+---
+
+### 🚪 Logout
+
+**Endpoint:** `POST /auth/logout`
+**Description:** Clears the auth cookie.
+
+---
+
+## 🔐 Middleware (JWT-Protected Routes)
+
+All `/blogs` routes are protected via custom middleware (`auth_middleware.py`) that checks the JWT from the request cookie. Unauthorized access returns `401 Unauthorized`.
+
+---
+
 ## 📌 API Endpoints
+
+### 📝 Blog Routes (Protected)
 
 | Method | Endpoint      | Description             |
 | ------ | ------------- | ----------------------- |
@@ -92,41 +144,24 @@ uvicorn app.utils.main:app --reload
 | PUT    | `/blogs/{id}` | Update an existing blog |
 | DELETE | `/blogs/{id}` | Delete a blog by ID     |
 
-
-
 ---
 
-### 📦 Docker Support
+## 🐳 Docker Support
 
-#### 🐳 Dockerfile
+### 🏗️ Build
 
-Created a file named `Dockerfile` in project root.
+```bash
+docker build -t fastapi-blog-app .
+```
 
----
+### 🚀 Run
 
-#### 📂 .dockerignore
+```bash
+docker run -p 8000:8000 fastapi-blog-app
+```
 
-Created a `.dockerignore` file in `backend/` directory to avoid copying unnecessary files:
+For environment variables:
 
-#### ⚙️ Build and Run
-
-1. **Build Docker image**
-   Run this in your terminal:
-
-   ```bash
-   docker build -t fastapi-blog-app .
-   ```
-
-2. **Run Docker container**
-
-   ```bash
-   docker run -p 8000:8000 fastapi-blog-app
-   ```
-
-   > If your app needs environment variables like `DATABASE_URL_CLOUD`, use:
-   >
-   > ```bash
-   > docker run --env-file .env -p 8000:8000 fastapi-blog-app
-   > ```
-
----
+```bash
+docker run --env-file .env -p 8000:8000 fastapi-blog-app
+```
