@@ -18,7 +18,7 @@ RUN pip install --upgrade pip && \
 COPY ./app ./app
 
 # Copy utils (if not inside app already)
-COPY .env .
+# COPY .env .
 
 # Expose port
 EXPOSE 8000

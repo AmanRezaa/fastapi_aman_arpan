@@ -3,7 +3,7 @@ from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.ext.asyncio import AsyncSession
 from app.controllers import blog_controller
 from app.models.pydantic_models import BlogCreate, BlogOut
-from app.utils.db import get_db
+from app.database.utils import get_db
 from typing import List
 
 router = APIRouter(prefix="/blogs", tags=["Blogs"])
@@ -37,3 +37,5 @@ async def delete_blog(id: int, db: AsyncSession = Depends(get_db)):
     if not deleted:
         raise HTTPException(status_code=404, detail="Blog not found or delete failed")
     return {"message": "Blog deleted successfully"}
+
+

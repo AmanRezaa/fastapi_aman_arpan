@@ -10,7 +10,7 @@ from fastapi import FastAPI
 from contextlib import asynccontextmanager
 
 from app.routes import blog_routes
-from app.utils.db import engine,Base
+from app.database.utils import engine,Base
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):

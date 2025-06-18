@@ -1,5 +1,13 @@
 
 
+
+## 👤 Author
+
+Developed by Arpan Koley and Aman Reza.
+
+
+---
+
 # 🚀 FastAPI CRUD Blog Application
 
 A modular and scalable FastAPI CRUD application for blogs, using asynchronous PostgreSQL integration and clean project structure.
@@ -21,6 +29,8 @@ backend/
 ├── venv/                  # Python virtual environment
 ├── .env                   # Environment variables (e.g., DB credentials)
 ├── .gitignore             # Git ignored files
+├── .dockerignore          # Docker ignored files
+├── .Dockerfile            # Docker commands
 ├── requirements.txt       # Python dependencies
 └── README.md              # Project documentation
 ```
@@ -83,9 +93,40 @@ uvicorn app.utils.main:app --reload
 | DELETE | `/blogs/{id}` | Delete a blog by ID     |
 
 
+
 ---
 
+### 📦 Docker Support
 
-## 👤 Author
+#### 🐳 Dockerfile
 
-Developed by Arpan Koley and Aman Reza.
+Created a file named `Dockerfile` in project root.
+
+---
+
+#### 📂 .dockerignore
+
+Created a `.dockerignore` file in `backend/` directory to avoid copying unnecessary files:
+
+#### ⚙️ Build and Run
+
+1. **Build Docker image**
+   Run this in your terminal:
+
+   ```bash
+   docker build -t fastapi-blog-app .
+   ```
+
+2. **Run Docker container**
+
+   ```bash
+   docker run -p 8000:8000 fastapi-blog-app
+   ```
+
+   > If your app needs environment variables like `DATABASE_URL_CLOUD`, use:
+   >
+   > ```bash
+   > docker run --env-file .env -p 8000:8000 fastapi-blog-app
+   > ```
+
+---
