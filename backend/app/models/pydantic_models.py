@@ -11,7 +11,7 @@ class BlogOut(BlogCreate):
     class Config:
         orm_mode = True
 
-
+    
 class UserLogin(BaseModel):
     email: EmailStr
     password: str
@@ -19,11 +19,6 @@ class UserLogin(BaseModel):
 class UserSignup(UserLogin):
     username : str
 
-
-class UserCreate(BaseModel):
-    email: EmailStr
-    password: str
-    
 
 class UserOut(BaseModel):
     email: EmailStr
