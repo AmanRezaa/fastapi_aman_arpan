@@ -8,7 +8,7 @@ from app.models.pydantic_models import BlogCreate
 
 async def create_blog(blog: BlogCreate, db: AsyncSession):
     try:
-        new_blog = Blog(**blog.dict())
+        new_blog = Blog(title=blog.title,content=blog.content)
         db.add(new_blog)
         await db.commit()
         await db.refresh(new_blog)
@@ -61,7 +61,7 @@ async def update_blog(blog_id: int, updated_blog: BlogCreate, db: AsyncSession):
                 detail=f"Blog with ID {blog_id} not found"
             )
 
-        for key, value in updated_blog.dict().items():
+        for key, value in updated_blog.model_dump().items():
             setattr(blog, key, value)
 
         db.add(blog)

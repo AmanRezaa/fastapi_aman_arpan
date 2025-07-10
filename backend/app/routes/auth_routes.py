@@ -7,7 +7,7 @@ import app.controllers.auth_controller as controller
 router = APIRouter(prefix="/auth", tags=["Auth"])
 
 
-@router.post("/signup", response_model=UserOut)
+@router.post("/signup")
 async def signup(user: UserSignup, db: AsyncSession = Depends(get_db)):
     return await controller.signup(user, db)
 
@@ -18,7 +18,3 @@ async def login(user: UserLogin, response: Response, db: AsyncSession = Depends(
 @router.post("/logout")
 async def logout(response: Response):
     return controller.logout(response)
-
-@router.get("/me", response_model=UserOut)
-async def me(request: Request, db: AsyncSession = Depends(get_db)):
-    return await controller.get_current_user(request, db)

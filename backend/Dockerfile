@@ -17,6 +17,9 @@ RUN pip install --upgrade pip && \
 # Copy app files
 COPY ./app ./app
 
+# copy config 
+COPY ./config ./config
+
 # Copy utils (if not inside app already)
 # COPY .env .
 
