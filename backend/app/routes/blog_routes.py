@@ -6,7 +6,7 @@ from app.models.pydantic_models import BlogCreate, BlogOut
 from app.database.utils import get_db
 from typing import List
 
-router = APIRouter(prefix="/blogs", tags=["Blogs"])
+router = APIRouter(tags=["Blogs"])
 
 
 @router.post("/", response_model=BlogOut)
