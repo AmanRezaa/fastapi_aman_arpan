@@ -15,7 +15,7 @@ backend/
 │   ├── main.py                  # FastAPI app initialization
 │               
 ├── scripts/
-│   └── dokcer.sh                # Docker helper script
+│   └── docker.sh                # Docker helper script
 ├── run.py                       # uvicorn start server script
 ├── .env                         # Environment variables
 ├── .gitignore
@@ -70,3 +70,10 @@ docker build -t fastapi-blog-app:latest .
 ```bash
 docker run --env-file .env -p 8000:8000 fastapi-blog-app:latest
 ```
+
+##  References
+1. FastApi Tutorial and Features: [link](https://fastapi.tiangolo.com/)
+2. Docker Tutorial : [link](https://www.geeksforgeeks.org/devops/docker-tutorial/)
+3. SQLAlchemy Documentation : [link](https://docs.sqlalchemy.org/en/20/)
+4. How to Add JWT Authentication in FastAPI – A Practical Guide : [link](https://www.freecodecamp.org/news/how-to-add-jwt-authentication-in-fastapi/)
+5. Connect an SQLAlchemy application to Neon : [link](https://neon.com/docs/guides/sqlalchemy)
